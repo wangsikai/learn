@@ -1,0 +1,513 @@
+package com.lanking.uxb.zycon.homework.resource;
+
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.lanking.cloud.domain.common.resource.question.Question;
+import com.lanking.cloud.domain.common.resource.question.Question.Type;
+import com.lanking.cloud.domain.frame.config.Parameter;
+import com.lanking.cloud.domain.frame.system.Product;
+import com.lanking.cloud.domain.support.console.common.HomeworkCorrectLogType;
+import com.lanking.cloud.domain.type.HomeworkAnswerResult;
+import com.lanking.cloud.domain.type.StudentHomeworkStatus;
+import com.lanking.cloud.domain.yoomath.homework.Homework;
+import com.lanking.cloud.domain.yoomath.homework.StudentHomework;
+import com.lanking.cloud.domain.yoomath.homework.StudentHomeworkAnswer;
+import com.lanking.cloud.domain.yoomath.homework.StudentHomeworkQuestion;
+import com.lanking.cloud.ex.core.IllegalArgException;
+import com.lanking.cloud.ex.core.MissingArgumentException;
+import com.lanking.cloud.ex.core.NoPermissionException;
+import com.lanking.cloud.ex.core.ServerException;
+import com.lanking.cloud.sdk.data.Page;
+import com.lanking.cloud.sdk.util.CollectionUtils;
+import com.lanking.cloud.sdk.util.StringUtils;
+import com.lanking.cloud.sdk.value.VPage;
+import com.lanking.cloud.sdk.value.Value;
+import com.lanking.intercomm.yoocorrect.client.CorrectQuestionDatawayClient;
+import com.lanking.uxb.core.annotation.RolesAllowed;
+import com.lanking.uxb.service.code.api.ParameterService;
+import com.lanking.uxb.service.correct.api.CorrectProcessor;
+import com.lanking.uxb.service.correct.vo.CorrectorType;
+import com.lanking.uxb.service.correct.vo.QuestionCorrectObject;
+import com.lanking.uxb.service.resources.api.StudentHomeworkAnswerService;
+import com.lanking.uxb.service.resources.api.StudentHomeworkService;
+import com.lanking.uxb.service.session.api.impl.Security;
+import com.lanking.uxb.service.zuoye.api.ZyStudentHomeworkQuestionService;
+import com.lanking.uxb.service.zuoye.form.TeaCorrectQuestionForm2;
+import com.lanking.uxb.zycon.holiday.api.ZycHolidayStuHomeworkItemQuestionService;
+import com.lanking.uxb.zycon.homework.api.ZycAutoCorrectingService;
+import com.lanking.uxb.zycon.homework.api.ZycCorrectingService;
+import com.lanking.uxb.zycon.homework.api.ZycHomeworkCorrectLogService;
+import com.lanking.uxb.zycon.homework.api.ZycQuestionService;
+import com.lanking.uxb.zycon.homework.api.ZycStudentHomeworkQuestionService;
+import com.lanking.uxb.zycon.homework.api.ZycStudentHomeworkService;
+import com.lanking.uxb.zycon.homework.convert.ZycHomeworkConvert;
+import com.lanking.uxb.zycon.homework.convert.ZycQuestionConvert;
+import com.lanking.uxb.zycon.homework.form.CorrectQuestionForm;
+import com.lanking.uxb.zycon.homework.form.HomeworkCorrectForm;
+import com.lanking.uxb.zycon.homework.form.HomeworkCorrectLogForm;
+import com.lanking.uxb.zycon.homework.form.HomeworkQueryForm;
+import com.lanking.uxb.zycon.homework.value.VZycHomework;
+import com.lanking.uxb.zycon.homework.value.VZycQuestion;
+
+/**
+ * 后台批改作业，查询作业记录接口
+ *
+ * @author qiuxue.jiang
+ * @since yoomath V2.0
+ */
+@RestController
+@RequestMapping(value = "zyc/correctRecord/")
+public class ZycYooCorrectingController {
+	@Autowired
+	private ZycCorrectingService zycCorrectingService;
+	@Autowired
+	private ZycHomeworkConvert zycHomeworkConvert;
+	@Autowired
+	private ZycStudentHomeworkQuestionService zycStudentHomeworkQuestionService;
+	@Autowired
+	@Qualifier(value = "hzycQuestionConvert")
+	private ZycQuestionConvert questionConvert;
+	@Autowired
+	private com.lanking.uxb.zycon.base.convert.ZycQuestionConvert questionConvert2;
+	@Autowired
+	private ZycQuestionService questionService;
+	@Autowired
+	private ZycStudentHomeworkService zycStudentHomeworkService;
+	@Autowired
+	private ZycAutoCorrectingService zycAutoCorrectingService;
+	@Autowired
+	private ZycHomeworkCorrectLogService correctLogService;
+	@Autowired
+	private ZycHolidayStuHomeworkItemQuestionService holidayStuHomeworkItemQuestionService;
+	@Autowired
+	private CorrectProcessor correctProcessor;
+	@Autowired
+	private CorrectQuestionDatawayClient correctDatawayClient;
+	@Autowired
+	private ParameterService parameterService;
+	@Autowired
+	private StudentHomeworkService shService;
+	@Autowired
+	private ZyStudentHomeworkQuestionService stuHkQuestionService;
+	@Autowired
+	private StudentHomeworkAnswerService studentHomeworkAnswerService;
+	@Autowired
+	private ZyStudentHomeworkQuestionService zyStuQuestionService;
+
+	/**
+	 * 同步需要批改的题目数量
+	 *
+	 *
+	 * @return Value
+	 */
+	@RequestMapping(value = "questionCount")
+	public Value questionCount() {
+		Value value = correctDatawayClient.correctQuestionsCount();
+		Parameter urlParam = parameterService.get(Product.YOOMATH, "yoocorrect.h5.url");
+		String url = urlParam.getValue();
+		
+		Map<String, Object> retMap = new HashMap<String, Object>(2);
+		
+		retMap.put("count", value.getRet());
+		retMap.put("yooUrl", url);
+
+		return new Value(retMap);
+	}
+
+	/**
+	 * 查询现在作业列表(非下发)
+	 *
+	 * @return Value
+	 */
+	@RequestMapping(value = "query", method = { RequestMethod.GET, RequestMethod.POST })
+	public Value query(HomeworkQueryForm form) {
+		// int offset = (page - 1) * size;
+
+		// Pageable pageable = P.offset(offset, size);
+		Page<Homework> pageValue = zycCorrectingService.page(form);
+		VPage<VZycHomework> vPage = new VPage<VZycHomework>();
+		List<VZycHomework> vs = zycHomeworkConvert.to(pageValue.getItems());
+		vPage.setItems(vs);
+		vPage.setCurrentPage(form.getPage());
+		vPage.setTotalPage(pageValue.getPageCount());
+		vPage.setPageSize(form.getSize());
+		vPage.setTotal(pageValue.getTotalCount());
+
+		return new Value(vPage);
+	}
+
+	/**
+	 * 得到作业下已提交学生的题目
+	 *
+	 * @param size
+	 *            一次性加载的题目
+	 * @return Value
+	 */
+	@RequestMapping(value = "query_stu_questions", method = { RequestMethod.GET, RequestMethod.POST })
+	public Value queryStuQuestions(@RequestParam(value = "size", defaultValue = "5") int size) {
+		List<Question> questions = questionService.zycFindStuHkQuestions(size);
+		List<VZycQuestion> vs = questionConvert.to(questions);
+		return new Value(vs);
+	}
+
+	/**
+	 * 新批改接口
+	 * 
+	 * @param formStr
+	 *            {@link HomeworkCorrectForm}
+	 *
+	 * @since V1.9.2
+	 * @return {@link Value}
+	 */
+	@RequestMapping(value = "3/correct", method = { RequestMethod.GET, RequestMethod.POST })
+	public Value correct3(@RequestParam(value = "formStr") String formStr) {
+		if (StringUtils.isBlank(formStr)) {
+			return new Value(new IllegalArgException());
+		}
+
+		HomeworkCorrectForm form = JSONObject.parseObject(formStr, HomeworkCorrectForm.class);
+		List<HomeworkCorrectLogForm> forms = new ArrayList<HomeworkCorrectLogForm>(form.getSqIds().size());
+
+		// 作业题归类
+		Map<Long, StudentHomeworkQuestion> studentHomeworkQuestionMap = zycStudentHomeworkQuestionService
+				.mget(form.getSqIds());
+		Map<Long, List<QuestionCorrectObject>> questionCorrectObjectMap = new HashMap<Long, List<QuestionCorrectObject>>();
+		for (int i = 0; i < form.getSqIds().size(); i++) {
+			if (form.getCountDownTime().get(i) != null && form.getCountDownTime().get(i) <= 0) {
+				continue;
+			}
+			long studentHomeworkId = form.getStuHkIds().get(i);
+			long studentHomeworkQuestionId = form.getSqIds().get(i);
+			StudentHomeworkQuestion studentHomeworkQuestion = studentHomeworkQuestionMap.get(studentHomeworkQuestionId);
+			List<QuestionCorrectObject> questionCorrectObjects = questionCorrectObjectMap.get(studentHomeworkId);
+			if (questionCorrectObjects == null) {
+				questionCorrectObjects = Lists.newArrayList();
+				questionCorrectObjectMap.put(studentHomeworkId, questionCorrectObjects);
+			}
+			QuestionCorrectObject questionCorrectObject = new QuestionCorrectObject();
+			questionCorrectObject.setStudentHomeworkId(studentHomeworkId);
+			questionCorrectObject.setStuHomeworkQuestionId(form.getSqIds().get(i));
+			questionCorrectObject.setQuestionType(studentHomeworkQuestion.getType());
+			questionCorrectObject.setQuestionResult(form.getResults().get(i));
+			if (form.getRightRates().get(i) != null) {
+				questionCorrectObject.setQuestionRightRate(form.getRightRates().get(i).intValue());
+			}
+			if (studentHomeworkQuestion.getType() == Type.FILL_BLANK) {
+				questionCorrectObject.setAnswerResultMap(form.getAnswerResults().get(i));
+			}
+			questionCorrectObjects.add(questionCorrectObject);
+		}
+
+		// 根据作业分类调用新的批改流程
+		for (Entry<Long, List<QuestionCorrectObject>> entry : questionCorrectObjectMap.entrySet()) {
+			correctProcessor.correctStudentHomeworkQuestions(Security.getUserId(), CorrectorType.PG_USER,
+					entry.getKey(), entry.getValue());
+		}
+
+		for (int i = 0; i < form.getSqIds().size(); i++) {
+			if (form.getCountDownTime().get(i) != null && form.getCountDownTime().get(i) <= 0) {
+				continue;
+			}
+			zycAutoCorrectingService.asyncAutoCheck(form.getStuHkIds().get(i), form.getSqIds().get(i),
+					form.getResults().get(i));
+
+			HomeworkCorrectLogForm logForm = new HomeworkCorrectLogForm(form.getSqIds().get(i),
+					form.getResults().get(i));
+			forms.add(logForm);
+		}
+
+		correctLogService.save(Security.getUserId(), forms, HomeworkCorrectLogType.HOMEWORK);
+
+		return new Value();
+	}
+
+	/**
+	 * 移除推送的questions
+	 *
+	 * @param questionIds
+	 *            question的ids
+	 * @return Value
+	 */
+	@RequestMapping(value = "remove_push_questions", method = { RequestMethod.GET, RequestMethod.POST })
+	public Value removePushQuestions(@RequestParam(value = "questionIds") String questionIds,
+			@RequestParam(value = "homeworkId") Long homeworkId) {
+		if (StringUtils.isBlank(questionIds)) {
+			return new Value(new IllegalArgException());
+		}
+
+		List<Long> ids = Lists.newArrayList();
+		for (String id : questionIds.split(",")) {
+			ids.add(Long.valueOf(id));
+		}
+		zycStudentHomeworkQuestionService.removePushedId(homeworkId, ids);
+
+		return new Value();
+	}
+
+	/**
+	 * 接口变更 >>> 现前端推送无序的题目给别人批改
+	 *
+	 * @param formStr
+	 *            {@link CorrectQuestionForm} JSON序列化后的form str
+	 * @return {@link Value}
+	 */
+	@RequestMapping(value = "remove_push_questions2", method = { RequestMethod.GET, RequestMethod.POST })
+	public Value removePushQuestions2(@RequestParam(value = "formStr") String formStr) {
+		if (StringUtils.isBlank(formStr)) {
+			return new Value(new IllegalArgException());
+		}
+
+		List<CorrectQuestionForm> forms = JSONObject.parseArray(formStr, CorrectQuestionForm.class);
+		Map<Long, List<Long>> map = Maps.newHashMap();
+		for (CorrectQuestionForm f : forms) {
+			List<Long> list = map.get(f.getHomeworkId());
+			if (null == list) {
+				list = Lists.newArrayList();
+				list.add(f.getStudentHomeworkQuestionId());
+				map.put(f.getHomeworkId(), list);
+			} else {
+				list.add(f.getStudentHomeworkQuestionId());
+				map.put(f.getHomeworkId(), list);
+			}
+		}
+
+		for (Map.Entry<Long, List<Long>> entry : map.entrySet()) {
+			zycStudentHomeworkQuestionService.removePushedId(entry.getKey(), entry.getValue());
+		}
+
+		return new Value();
+	}
+
+	/**
+	 * 得到作业下布置的所有题目
+	 *
+	 * @param homeworkId
+	 *            作业id
+	 * @return 数据
+	 */
+	@RequestMapping(value = "query_hk_questions", method = { RequestMethod.GET, RequestMethod.POST })
+	public Value queryHKQuestions(@RequestParam(value = "homeworkId") Long homeworkId) {
+		List<Question> questions = questionService.zycFindHKQuestions(homeworkId);
+		return new Value(questionConvert2.to(questions, false, true, false, null));
+	}
+	
+	/**
+	 * 批改题目
+	 * 
+	 * @since 1.9.1 (支持简单题的批改)
+	 * @since 小优快批，2018-2-12
+	 * 
+	 * @param stuHkId
+	 *            学生作业ID
+	 * @param stuHkQId
+	 *            学生作业题目ID
+	 * @param result
+	 *            批改结果
+	 * @return {@link Value}
+	 */
+	@RequestMapping(value = "2/correct", method = { RequestMethod.POST, RequestMethod.GET })
+	public Value correct2(long stuHkId, long stuHkQId, HomeworkAnswerResult result, BigDecimal rightRate, Type type,
+			Integer questionRate, @RequestParam(required = false) List<HomeworkAnswerResult> itemResults,
+			@RequestParam(required = false) Long questionId) {
+
+		StudentHomework stuHk = shService.get(stuHkId);
+		if (stuHk == null || stuHk.getStatus() == StudentHomeworkStatus.NOT_SUBMIT) {
+			// 没有提交或已经下发的作业不能批改
+			return new Value(new NoPermissionException());
+		}
+
+		// 批改对象
+		// 注意此处不再使用从前台传输整份作业的正确率
+		QuestionCorrectObject questionCorrectObject = new QuestionCorrectObject();
+		questionCorrectObject.setStudentHomeworkId(stuHkId);
+		questionCorrectObject.setStuHomeworkQuestionId(stuHkQId);
+		if (type == null) {
+			StudentHomeworkQuestion studentHomeworkQuestion = stuHkQuestionService.get(stuHkQId);
+			type = studentHomeworkQuestion.getType();
+		}
+		questionCorrectObject.setQuestionType(type);
+		questionCorrectObject.setQuestionResult(result);
+		questionCorrectObject.setQuestionRightRate(questionRate == null ? null : questionRate.intValue());
+
+		if (type == Type.FILL_BLANK) {
+			// 填空题
+			List<StudentHomeworkAnswer> list = studentHomeworkAnswerService.find(stuHkQId);
+			if (itemResults == null || list.size() != itemResults.size()) {
+				return new Value(new MissingArgumentException());
+			}
+			Map<Long, HomeworkAnswerResult> answerResultMap = new HashMap<Long, HomeworkAnswerResult>(
+					itemResults.size());
+			if (CollectionUtils.isNotEmpty(list)) {
+				for (int i = 0; i < list.size(); i++) {
+					answerResultMap.put(list.get(i).getId(), itemResults.get(i));
+				}
+			}
+			questionCorrectObject.setAnswerResultMap(answerResultMap);
+		}
+
+		// 调用批改处理
+		correctProcessor.correctStudentHomeworkQuestion(Security.getUserId(), CorrectorType.PG_USER,
+				questionCorrectObject);
+
+		return new Value();
+	}
+	
+	/**
+	 * 
+	 * @since 小悠快批，2018-2-13，注意新流程仅支持单题批改，不要批量题目批改提交！若原有批量题目提交的场景，请修改。
+	 * @param form
+	 * @return
+	 */
+	@RequestMapping(value = "2/save", method = { RequestMethod.GET, RequestMethod.POST })
+	public Value save2(TeaCorrectQuestionForm2 form) {
+		if (form.getAnswerResults() == null && form.getResult() == null && form.getRightRate() == null
+				&& form.getNotationImageId() == null) {
+			return new Value(new IllegalArgException());
+		}
+		try {
+			// 调用新的批改流程
+			QuestionCorrectObject questionCorrectObject = new QuestionCorrectObject();
+			questionCorrectObject.setStudentHomeworkId(form.getStuHkId());
+			questionCorrectObject.setStuHomeworkQuestionId(form.getStuHkQuestionId());
+			questionCorrectObject.setQuestionType(form.getType());
+			questionCorrectObject.setQuestionRightRate(form.getRightRate());
+			questionCorrectObject.setQuestionResult(form.getResult());
+
+			// 填空题
+			if (CollectionUtils.isNotEmpty(form.getAnswerMap())) {
+				questionCorrectObject.setAnswerResultMap(form.getAnswerMap());
+			}
+			questionCorrectObject.setNotation(form.getNotation());
+			questionCorrectObject.setNotationImageId(form.getNotationImageId());
+			questionCorrectObject.setNotationImageIds(form.getNotationImageIds());
+			questionCorrectObject.setNotations(form.getNotations());
+			questionCorrectObject.setAnswerImgId(form.getAnswerImgId());
+			questionCorrectObject.setAnswerImgIds(form.getAnswerImgIds());
+			correctProcessor.correctStudentHomeworkQuestion(Security.getUserId(), CorrectorType.PG_USER,
+					questionCorrectObject);
+
+		} catch (Exception e) {
+			return new Value(new ServerException());
+		}
+
+		return new Value();
+	}
+
+	/**
+	 * 新增查询界面批注的保存
+	 * 
+	 * wangsenhao 2017-1-10
+	 * 
+	 * @param form
+	 * @return
+	 */
+	@RequestMapping(value = "saveInQuery", method = { RequestMethod.GET, RequestMethod.POST })
+	public Value saveInQuery(TeaCorrectQuestionForm2 form) {
+		if (form.getAnswerResults() == null && form.getResult() == null && form.getRightRate() == null
+				&& form.getNotationImageId() == null) {
+			return new Value(new IllegalArgException());
+		}
+		try {
+			zyStuQuestionService.saveNotation(form);
+		} catch (Exception e) {
+			return new Value(new ServerException());
+		}
+		return new Value();
+	}
+
+	/**
+	 * 导出操作
+	 *
+	 * form 中导出传入的size固定由前端传入进来
+	 *
+	 * @param response
+	 *            {@link HttpServletResponse}
+	 * @param form
+	 *            {@link HomeworkQueryForm}
+	 */
+	@RequestMapping(value = "export", method = { RequestMethod.GET })
+	public void export(HttpServletResponse response, HomeworkQueryForm form) {
+		Page<Homework> pageValue = zycCorrectingService.page(form);
+		VPage<VZycHomework> vPage = new VPage<VZycHomework>();
+		List<VZycHomework> vs = zycHomeworkConvert.to(pageValue.getItems());
+
+		HSSFWorkbook workbook = new HSSFWorkbook();
+		HSSFSheet sheet = workbook.createSheet();
+		HSSFRow row = sheet.createRow(0);
+		row.createCell(0).setCellValue("省");
+		row.createCell(1).setCellValue("市");
+		row.createCell(2).setCellValue("学校");
+		row.createCell(3).setCellValue("教师");
+		row.createCell(4).setCellValue("班级/小组");
+		row.createCell(5).setCellValue("作业名称");
+		row.createCell(6).setCellValue("答题时间");
+		row.createCell(7).setCellValue("已提交人数");
+		row.createCell(8).setCellValue("状态");
+
+		int i = 1;
+		SimpleDateFormat format = new SimpleDateFormat("MM-dd HH:mm");
+		for (VZycHomework v : vs) {
+			row = sheet.createRow(i);
+			row.createCell(0).setCellValue(v.getClazz().getProvince());
+			row.createCell(1).setCellValue(v.getClazz().getCity());
+			row.createCell(2).setCellValue(v.getClazz().getSchoolName());
+			row.createCell(3).setCellValue(v.getClazz().getTeacherName());
+			String name = "";
+			if(StringUtils.isNoneBlank(v.getClazz().getGroupName())) {
+				name = v.getClazz().getName() + "/" + v.getClazz().getGroupName();
+			} else {
+				name = v.getClazz().getName();
+			}
+			row.createCell(4).setCellValue(name);
+			row.createCell(5).setCellValue(v.getName());
+			row.createCell(6).setCellValue(format.format(v.getStartTime()) + "~" + format.format(v.getDeadline()));
+			row.createCell(7).setCellValue(v.getCommitCount() + "/" + v.getDistributeCount());
+
+			String statusName = "";
+			switch (v.getType()) {
+			case FINISH:
+				statusName = "已截止";
+				break;
+			case WORKING:
+				statusName = "批改中";
+				break;
+			case INIT:
+				statusName = "作业中";
+				break;
+			}
+			row.createCell(8).setCellValue(statusName);
+			i++;
+		}
+
+		try {
+			response.reset();
+			response.setContentType("bin");
+			response.addHeader("Content-Disposition",
+					"attachment; filename=\"" + new String("作业列表.xls".getBytes("UTF-8"), "ISO-8859-1") + "\"");
+			workbook.write(response.getOutputStream());
+		} catch (Exception e) {
+		}
+
+	}
+}

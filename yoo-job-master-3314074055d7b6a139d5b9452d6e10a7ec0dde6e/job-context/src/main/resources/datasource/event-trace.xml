@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:rdb="http://www.dangdang.com/schema/ddframe/rdb"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.dangdang.com/schema/ddframe/rdb
+       http://www.dangdang.com/schema/ddframe/rdb/rdb.xsd">
+    
+    <bean name="eventTraceDataSource" class="org.apache.tomcat.jdbc.pool.DataSource">
+  		<property name="url" value="${yoo-cloud.job.datasource.event-trace.url}"/>
+  		<property name="driverClassName" value="${yoo-cloud.job.datasource.event-trace.driverClassName}"/>
+  		<property name="username" value="${yoo-cloud.job.datasource.event-trace.username}"/>
+  		<property name="password" value="${yoo-cloud.job.datasource.event-trace.password}"/>
+  		<property name="initialSize" value="${yoo-cloud.job.datasource.event-trace.initialSize}"/>
+  		<property name="minIdle" value="${yoo-cloud.job.datasource.event-trace.minIdle}"/>
+  		<property name="maxActive" value="${yoo-cloud.job.datasource.event-trace.maxActive}"/>
+  		<property name="maxWait" value="${yoo-cloud.job.datasource.event-trace.maxWait}"/>
+  		<property name="timeBetweenEvictionRunsMillis" value="${yoo-cloud.job.datasource.event-trace.timeBetweenEvictionRunsMillis}"/>
+  		<property name="minEvictableIdleTimeMillis" value="${yoo-cloud.job.datasource.event-trace.minEvictableIdleTimeMillis}"/>
+  		<property name="validationInterval" value="${yoo-cloud.job.datasource.event-trace.validationInterval}"/>
+  		<property name="validationQuery" value="${yoo-cloud.job.datasource.event-trace.validationQuery}"/>
+  		<property name="removeAbandoned" value="${yoo-cloud.job.datasource.event-trace.removeAbandoned}"/>
+  		<property name="removeAbandonedTimeout" value="${yoo-cloud.job.datasource.event-trace.removeAbandonedTimeout}"/>
+  		<property name="logAbandoned" value="${yoo-cloud.job.datasource.event-trace.logAbandoned}"/>
+  		<property name="testWhileIdle" value="${yoo-cloud.job.datasource.event-trace.testWhileIdle}"/>
+  		<property name="testOnBorrow" value="${yoo-cloud.job.datasource.event-trace.testOnBorrow}"/>
+  		<property name="testOnReturn" value="${yoo-cloud.job.datasource.event-trace.testOnReturn}"/>
+  		<property name="jdbcInterceptors" value="${yoo-cloud.job.datasource.event-trace.jdbcInterceptors}"/>
+  		<property name="defaultAutoCommit" value="${yoo-cloud.job.datasource.event-trace.defaultAutoCommit}"/>
+  		<property name="jmxEnabled" value="${yoo-cloud.job.datasource.event-trace.jmxEnabled}"/>
+  		<qualifier value="eventTraceDataSource"/>
+	</bean>  
+	
+	<bean name="eventTraceDataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    	<property name="dataSource" ref="eventTraceDataSource"/>
+    	<qualifier value="eventTraceDataSourceTransactionManager"/>
+	</bean>
+	
+	<bean name="eventTraceJdbcTemplate" class="com.lanking.cloud.component.db.support.jdbcTemplate.JdbcTemplate">
+    	<property name="dataSource" ref="eventTraceDataSource"/>
+    	<qualifier value="eventTraceJdbcTemplate"/>
+	</bean>  
+</beans>

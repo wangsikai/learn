@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:reg="http://www.dangdang.com/schema/ddframe/reg"
+	xmlns:job="http://www.dangdang.com/schema/ddframe/job"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.dangdang.com/schema/ddframe/reg
+                        http://www.dangdang.com/schema/ddframe/reg/reg.xsd
+                        http://www.dangdang.com/schema/ddframe/job
+                        http://www.dangdang.com/schema/ddframe/job/job.xsd
+                        ">
+	 <job:simple 
+			id="QuestionDistributeJob" 
+			class="com.lanking.cloud.job.CorrectQuestionDistributeJob"
+			registry-center-ref="registryCenter" 
+			cron="0/3 * * * * ?"
+			sharding-total-count="1"
+			description="小优快批服务题目分配"
+			event-trace-rdb-data-source="eventTraceDataSource"
+			sharding-item-parameters="0=0,1=1,2=2"
+			misfire="false"
+			disabled="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="CorrectUserDayStatJob" 
+			class="com.lanking.cloud.job.CorrectUserDayStatJob"
+			registry-center-ref="registryCenter" 
+			cron="0 0/3 * * * ?"
+			sharding-total-count="1"
+			description="小优快批日统计"
+			event-trace-rdb-data-source="eventTraceDataSource"
+			sharding-item-parameters="0=0"
+			misfire="false"
+			disabled="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="CorrectUserMonthStatJob"
+			class="com.lanking.cloud.job.CorrectUserMonthStatJob"
+			registry-center-ref="registryCenter"
+			cron="0 0 0/1 * * ? *"
+			sharding-total-count="1"
+			description="小优快批月统计"
+			event-trace-rdb-data-source="eventTraceDataSource"
+			sharding-item-parameters="0=0"
+			misfire="false"
+			disabled="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+			<job:simple 
+			id="SyncCorrectQuestionJob" 
+			class="com.lanking.cloud.job.SyncCorrectQuestionJob"
+			registry-center-ref="registryCenter" 
+			cron="0/3 * * * * ?"
+			sharding-total-count="1"
+			description="同步传输失败的快批习题"
+			event-trace-rdb-data-source="eventTraceDataSource"
+			sharding-item-parameters="0=0,1=1,2=2"
+			misfire="false"
+			disabled="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+			<job:simple 
+			id="TrustRankUpdateJob" 
+			class="com.lanking.cloud.job.TrustRankUpdateJob"
+			registry-center-ref="registryCenter" 
+			cron="0 0 22 * * ?"
+			sharding-total-count="1"
+			description="批改用户信任值修改job"
+			event-trace-rdb-data-source="eventTraceDataSource"
+			sharding-item-parameters="0=0,1=1,2=2"
+			misfire="false"
+			disabled="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+</beans>

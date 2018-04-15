@@ -1,0 +1,27 @@
+spring:
+  cloud:
+    config:
+      discovery: 
+        enabled: false
+        serviceId: ${SPRING_CLOUD_CONFIG_DISCOVERY_SERVICEID:config-server}
+      name: ${spring.application.name}
+      profile: ${spring.profiles.active}
+    
+eureka:
+  instance:
+    hostname: ${EUREKA_INSTANCE_HOSTNAME:uxb}
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 10
+  client:
+    serviceUrl:
+      defaultZone: ${config-server-zone}
+      
+hystrix:
+  command:
+      default:
+        execution:
+          isolation:
+            thread:
+              timeoutInMilliseconds: 3000

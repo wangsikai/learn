@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:reg="http://www.dangdang.com/schema/ddframe/reg"
+	xmlns:job="http://www.dangdang.com/schema/ddframe/job"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.dangdang.com/schema/ddframe/reg
+                        http://www.dangdang.com/schema/ddframe/reg/reg.xsd
+                        http://www.dangdang.com/schema/ddframe/job
+                        http://www.dangdang.com/schema/ddframe/job/job.xsd
+                        ">
+	<job:simple 
+			id="NationalDayActivity01TeaScoreJob" 
+			class="com.lanking.cloud.job.NationalDayActivity01TeaScoreJob"
+			registry-center-ref="registryCenter" 
+			cron="0 0 0/2 * * ?"
+			sharding-total-count="1"
+			description="国庆节活动:老师的综合分统计"
+			event-trace-rdb-data-source="eventTraceDataSource"
+			sharding-item-parameters="0=0"
+			misfire="false"
+			disabled="true"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>                        
+                        
+	 <job:simple 
+			id="NationalDayActivity01StuAwardJob" 
+			class="com.lanking.cloud.job.NationalDayActivity01StuAwardJob"
+			registry-center-ref="registryCenter" 
+			cron="0 10 1 * * ?"
+			sharding-total-count="1"
+			description="国庆节活动:学生最终奖项统计"
+			event-trace-rdb-data-source="eventTraceDataSource"
+			sharding-item-parameters="0=0"
+			misfire="false"
+			disabled="true"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="NationalDayActivity01TeaAwardJob" 
+			class="com.lanking.cloud.job.NationalDayActivity01TeaAwardJob"
+			registry-center-ref="registryCenter" 
+			cron="0 10 1 * * ?"
+			sharding-total-count="1"
+			description="国庆节活动:老师最终奖项统计"
+			event-trace-rdb-data-source="eventTraceDataSource"
+			sharding-item-parameters="0=0"
+			misfire="false"
+			disabled="true"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>			
+</beans>

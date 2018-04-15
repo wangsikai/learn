@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+	<parent>
+        <groupId>com.lanking.cloud.handwriting</groupId>
+        <artifactId>yoo-handwriting</artifactId>
+        <version>1.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>handwriting-proxy</artifactId>
+    <packaging>jar</packaging>
+    <name>handwriting-proxy</name>
+ 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<start-class>com.elanking.cloud.handwriting.HandwritingProxyApplication</start-class>
+    </properties>
+ 
+    <build>
+        <plugins>
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+				    	<id>attach-sources</id>
+				      	<goals>
+				        	<goal>jar</goal>
+				      	</goals>
+				    </execution>
+				</executions>
+			</plugin>
+			<plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+    
+    <dependencies>
+    	<!-- 第三方依赖 -->	
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-client</artifactId>
+    	</dependency>
+    	<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-framework</artifactId>
+    	</dependency>
+    	<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-recipes</artifactId>
+    	</dependency>
+    	<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+    	
+    	<!-- 依赖的其他模块 -->
+    	<dependency>
+			<groupId>com.lanking.cloud.component</groupId>
+			<artifactId>database</artifactId>
+		</dependency>
+		<!-- <dependency>
+			<groupId>com.lanking.cloud.component</groupId>
+			<artifactId>mq</artifactId>
+		</dependency>	 -->
+		<dependency>
+	    	<groupId>com.lanking.cloud.domain</groupId>
+	    	<artifactId>domain-type</artifactId>
+	    </dependency>
+		<dependency>
+	    	<groupId>com.lanking.cloud.domain</groupId>
+	    	<artifactId>domain-base</artifactId>
+	    </dependency>
+	    <dependency>
+	    	<groupId>com.lanking.cloud.domain</groupId>
+	    	<artifactId>domain-frame</artifactId>
+	    </dependency>
+	    <dependency>
+	    	<groupId>com.lanking.cloud.domain</groupId>
+	    	<artifactId>domain-common</artifactId>
+	    </dependency>
+	    <dependency>
+	    	<groupId>com.lanking.cloud.domain</groupId>
+	    	<artifactId>domain-yoo</artifactId>
+	    </dependency>
+	    <dependency>
+	    	<groupId>com.lanking.cloud.domain</groupId>
+	    	<artifactId>domain-yoomath</artifactId>
+	    </dependency>
+	    <dependency>
+	    	<groupId>com.lanking.cloud.domain</groupId>
+	    	<artifactId>domain-support</artifactId>
+	    </dependency>	
+    </dependencies>
+</project>

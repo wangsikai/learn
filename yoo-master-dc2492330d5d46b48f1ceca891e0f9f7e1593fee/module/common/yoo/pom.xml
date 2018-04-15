@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+        <groupId>com.lanking</groupId>
+        <artifactId>module-common-parent</artifactId>
+        <version>4.9.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    
+    <artifactId>yoo</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>jar</packaging>
+
+    <dependencies>
+    	<dependency>
+    		<groupId>com.lanking</groupId>
+    		<artifactId>cache</artifactId>
+    	</dependency>
+    	<dependency>
+    		<groupId>com.lanking.cloud.component</groupId>
+    		<artifactId>mq</artifactId>
+    	</dependency>
+    	<dependency>
+    		<groupId>com.lanking</groupId>
+    		<artifactId>session</artifactId>
+    	</dependency>
+    	<dependency>
+    		<groupId>com.lanking</groupId>
+    		<artifactId>security</artifactId>
+    	</dependency>
+    	<dependency>
+    		<groupId>com.lanking</groupId>
+    		<artifactId>file</artifactId>
+    	</dependency>
+    	<dependency>
+    		<groupId>com.lanking</groupId>
+    		<artifactId>domains</artifactId>
+    	</dependency>
+    	
+    	<!-- thirdparty -->
+    	<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+		</dependency>
+		<dependency>
+			  <groupId>uk.ac.ed.ph.snuggletex</groupId>
+			  <artifactId>snuggletex-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-freemarker</artifactId>
+		</dependency>
+    </dependencies>
+</project>

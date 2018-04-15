@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+	
+    <parent>
+        <groupId>com.lanking.cloud.component</groupId>
+        <artifactId>yoo-component-parent</artifactId>
+        <version>1.0.3-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>database</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>jar</packaging>
+    <version>1.0.6-SNAPSHOT</version>
+    
+    <dependencies>
+	    <!-- 第三方依赖 -->	 
+	    <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-web</artifactId>
+		    <scope>provided</scope>
+		</dependency>   	 
+        <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+        <dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<dependency>
+	    	<groupId>com.github.httl</groupId>
+	        <artifactId>httl</artifactId>
+	    </dependency>
+	    <dependency>  
+            <groupId>com.googlecode.log4jdbc</groupId>
+  			<artifactId>log4jdbc</artifactId> 
+ 		</dependency>
+ 		<dependency>
+			<groupId>com.dangdang</groupId>
+			<artifactId>sharding-jdbc-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.dangdang</groupId>
+			<artifactId>sharding-jdbc-config-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- 依赖的其他模块 -->
+    	<dependency>
+  			<groupId>com.lanking.cloud.common</groupId>
+			<artifactId>sdk</artifactId>
+		</dependency>
+    </dependencies>
+    
+    <build>
+    	<plugins>
+    		<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+				    	<id>attach-sources</id>
+				      	<goals>
+				        	<goal>jar</goal>
+				      	</goals>
+				    </execution>
+				</executions>
+			</plugin>
+    	</plugins>
+    </build>
+</project>

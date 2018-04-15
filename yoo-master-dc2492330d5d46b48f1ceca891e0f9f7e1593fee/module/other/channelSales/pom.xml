@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+	<parent>
+        <groupId>com.lanking</groupId>
+        <artifactId>module-other-parent</artifactId>
+        <version>4.9.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    
+    <artifactId>channelSales</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>jar</packaging>
+
+    <dependencies>
+    	<!-- uxb begin-->
+    	<dependency>
+    		<groupId>com.lanking</groupId>
+    		<artifactId>context</artifactId>
+    	</dependency>
+    	<dependency>
+    		<groupId>com.lanking</groupId>
+    		<artifactId>security</artifactId>
+    	</dependency>
+        <dependency>
+            <groupId>com.lanking</groupId>
+            <artifactId>admin-security</artifactId>
+        </dependency>
+        <dependency>
+			<groupId>com.lanking.cloud.component</groupId>
+			<artifactId>searcher</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>com.lanking</groupId>
+            <artifactId>index</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lanking</groupId>
+            <artifactId> yooShare-service</artifactId>
+        </dependency>
+    	<!-- uxb end-->
+       <!-- 3rd begin-->
+    	<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+    	<!-- 3rd end-->
+    </dependencies>
+</project>

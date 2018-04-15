@@ -1,0 +1,6 @@
+org.springframework.context.ApplicationContextInitializer=\
+com.lanking.cloud.component.dubbo.DubboConfigurationApplicationContextInitializer
+org.springframework.context.ApplicationListener=\
+com.lanking.cloud.component.dubbo.DubboHolderListener
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.lanking.cloud.component.dubbo.DubboAutoConfiguration

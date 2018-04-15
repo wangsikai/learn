@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:reg="http://www.dangdang.com/schema/ddframe/reg"
+	xmlns:job="http://www.dangdang.com/schema/ddframe/job"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.dangdang.com/schema/ddframe/reg
+                        http://www.dangdang.com/schema/ddframe/reg/reg.xsd
+                        http://www.dangdang.com/schema/ddframe/job
+                        http://www.dangdang.com/schema/ddframe/job/job.xsd
+                        ">
+    <job:simple 
+			id="HolidayHomeworkJob" 
+			class="com.lanking.uxb.service.holiday.api.impl.job.HolidayHomeworkJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.HolidayHomeworkJob.cron}"
+			sharding-total-count="1"
+			description="假期作业任务"
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="ZyHomeworkJob" 
+			class="com.lanking.uxb.service.web.api.impl.job.ZyHomeworkJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.ZyHomeworkJob.cron}"
+			sharding-total-count="1"
+			description="普通作业任务"
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+</beans>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+        <groupId>com.lanking.cloud.common</groupId>
+        <artifactId>yoo-common-parent</artifactId>
+        <version>1.0.3-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>ex</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>jar</packaging>
+
+    <dependencies>
+    	<!-- 第三方依赖 -->
+    	<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+    		<groupId>org.slf4j</groupId>
+  			<artifactId>slf4j-api</artifactId>
+  		</dependency>
+  		
+  		<!-- 依赖的其他模块 -->
+  		
+    </dependencies>
+    
+    <build>
+    	<plugins>
+    		<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+				    	<id>attach-sources</id>
+				      	<goals>
+				        	<goal>jar</goal>
+				      	</goals>
+				    </execution>
+				</executions>
+			</plugin>
+    	</plugins>
+    </build>
+</project>

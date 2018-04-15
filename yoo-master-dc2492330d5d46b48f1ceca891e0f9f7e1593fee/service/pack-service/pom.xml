@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+	<parent>
+        <groupId>com.lanking</groupId>
+        <artifactId>service-parent</artifactId>
+        <version>4.9.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    
+    <artifactId>pack-service</artifactId>
+    <name>${project.artifactId}</name>
+	<packaging>jar</packaging>
+
+    <dependencies>
+    	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		
+		<dependency>
+	        <groupId>org.springframework.cloud</groupId>
+	        <artifactId>spring-cloud-starter-config</artifactId>
+	    </dependency>
+		<dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-starter-eureka</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+		</dependency>
+		
+		<!-- uxb start -->
+			<!-- core -->
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>context</artifactId>
+			</dependency>
+			
+			
+			
+			
+			<!-- sdk -->
+			<!-- core sdk -->
+			<!-- common sdk -->
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>domains</artifactId>
+			</dependency>
+			
+			
+			
+			
+			<!-- module -->
+			<!-- core module -->
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>cache</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>count</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>file</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>index</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>latex</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>message</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>mongodb</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking.cloud.component</groupId>
+				<artifactId>mq</artifactId>
+			</dependency>
+			<dependency>
+			<groupId>com.lanking.cloud.component</groupId>
+			<artifactId>searcher</artifactId>
+		</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>security</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>session</artifactId>
+			</dependency>
+			<dependency>
+	    		<groupId>com.lanking</groupId>
+	    		<artifactId>job</artifactId>
+	    	</dependency>
+			
+			<!-- common module -->
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>base</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>yoo</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>yooShare-service</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>admin-security</artifactId>
+			</dependency>
+			
+			
+			
+			<!-- yoomath module -->
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>yoomath</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>ym-web</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>ym-mobile</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>ym-weixin</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>ym-task</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>ym-console</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>ym-ycorrect</artifactId>
+			</dependency>
+			
+			
+
+			<!-- other module -->
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>resource</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>data</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>operation</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>channelSales</artifactId>
+			</dependency>
+			
+			
+			<!-- 临时 -->
+			<dependency>
+				<groupId>com.lanking</groupId>
+				<artifactId>temporary</artifactId>
+			</dependency> 
+			<!-- uxb end -->
+    </dependencies>
+
+    <properties>
+        <start-class>com.lanking.uxb.service.PackApplication</start-class>
+    </properties>
+
+    <build>
+        <plugins>
+        	<!-- 
+        	<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+				    	<id>enforce-banned-dependencies</id>
+				        <goals>
+				        	<goal>enforce</goal>
+				        </goals>
+				        <configuration>
+				        	<rules>
+				        		<bannedDependencies>
+				                  <excludes>
+					               	<exclude>commons-logging-1.2.jar</exclude>  
+				                  </excludes>
+				                </bannedDependencies>
+				            </rules>
+				            <fail>false</fail>
+				        </configuration>
+					</execution>
+				</executions>
+			</plugin>
+			-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

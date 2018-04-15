@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:reg="http://www.dangdang.com/schema/ddframe/reg"
+	xmlns:job="http://www.dangdang.com/schema/ddframe/job"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.dangdang.com/schema/ddframe/reg
+                        http://www.dangdang.com/schema/ddframe/reg/reg.xsd
+                        http://www.dangdang.com/schema/ddframe/job
+                        http://www.dangdang.com/schema/ddframe/job/job.xsd
+                        ">
+    <job:simple 
+			id="AnswerArchiveWrongLibrary2AnswerArchiveJob" 
+			class="com.lanking.uxb.service.intelligentCorrection.api.impl.job.AnswerArchiveWrongLibrary2AnswerArchiveJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.AnswerArchiveWrongLibrary2AnswerArchiveJob.cron}"
+			sharding-total-count="1"
+			description="自动批改答案库归档任务"
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="CoinsLotterySeasonJob" 
+			class="com.lanking.uxb.service.lottery.api.impl.job.CoinsLotterySeasonJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.CoinsLotterySeasonJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="DiagnosticClassJob" 
+			class="com.lanking.uxb.service.diagnostic.api.impl.job.DiagnosticClassJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.DiagnosticClassJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="DoQuestionRankingJob" 
+			class="com.lanking.uxb.service.ranking.api.impl.job.DoQuestionRankingJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.DoQuestionRankingJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="DoQuestionStuStatJob" 
+			class="com.lanking.uxb.service.fallible.api.impl.job.DoQuestionStuStatJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.DoQuestionStuStatJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<!--<job:simple 
+			id="HolidayActivity01PublishJob" 
+			class="com.lanking.uxb.service.holidayActivity01.api.impl.job.HolidayActivity01PublishJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.HolidayActivity01PublishJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="HolidayActivity01StatisticsRateJob" 
+			class="com.lanking.uxb.service.holidayActivity01.api.impl.job.HolidayActivity01StatisticsRateJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.HolidayActivity01StatisticsRateJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="HolidayActivity01SubmitRateJob" 
+			class="com.lanking.uxb.service.holidayActivity01.api.impl.job.HolidayActivity01SubmitRateJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.HolidayActivity01SubmitRateJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>-->
+			
+	<job:simple 
+			id="HomeworkRightRateJob" 
+			class="com.lanking.uxb.service.homeworkRightRate.api.impl.job.HomeworkRightRateJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.HomeworkRightRateJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<!--<job:simple 
+			id="ImperialExaminationJob" 
+			class="com.lanking.uxb.service.imperialExamination.api.impl.job.ImperialExaminationJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.ImperialExaminationJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>-->
+			
+	<job:simple 
+			id="KnowledgeQuestionCountStatJob" 
+			class="com.lanking.uxb.service.question.api.impl.job.KnowledgeQuestionCountStatJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.KnowledgeQuestionCountStatJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="KnowpointCardRecommendJob" 
+			class="com.lanking.uxb.service.knowpointCard.api.impl.job.KnowpointCardRecommendJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.KnowpointCardRecommendJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="Question2TagJob" 
+			class="com.lanking.uxb.service.question.api.impl.job.Question2TagJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.Question2TagJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="SectionQuestionCountStatJob" 
+			class="com.lanking.uxb.service.question.api.impl.job.SectionQuestionCountStatJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.SectionQuestionCountStatJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="StuExerciseWeakKnowStatJob" 
+			class="com.lanking.uxb.service.stuweakkp.api.impl.job.StuExerciseWeakKnowStatJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.StuExerciseWeakKnowStatJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="TaskSyncOrderOpenVipJob" 
+			class="com.lanking.uxb.service.syncOrder.api.impl.job.TaskSyncOrderOpenVipJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.TaskSyncOrderOpenVipJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="UserChannelJob" 
+			class="com.lanking.uxb.service.channel.api.impl.job.UserChannelJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.UserChannelJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="UserChannelSettleJob" 
+			class="com.lanking.uxb.service.channel.api.impl.job.UserChannelSettleJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.UserChannelSettleJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="YoomathClassStatisticsReportJob" 
+			class="com.lanking.uxb.service.report.api.impl.job.YoomathClassStatisticsReportJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.YoomathClassStatisticsReportJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+	<job:simple 
+			id="YoomathStudentStatisticsReportStatJob" 
+			class="com.lanking.uxb.service.report.api.impl.job.YoomathStudentStatisticsReportStatJob"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.YoomathStudentStatisticsReportStatJob.cron}"
+			sharding-total-count="1"
+			description=""
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/>
+			
+<!--	<job:simple 
+			id="HolidayActivity02Job" 
+			class="com.lanking.uxb.service.holidayActivity02.job.HolidayActivity02Job"
+			registry-center-ref="registryCenter" 
+			cron="${yoo-cloud.job.HolidayActivity02Job.cron}"
+			sharding-total-count="1"
+			description="假期活动02统计战力的排名"
+			event-trace-rdb-data-source="eventTraceDataSource"
+			misfire="false"
+			job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.OdevitySortByNameJobShardingStrategy"/> -->
+			
+</beans>

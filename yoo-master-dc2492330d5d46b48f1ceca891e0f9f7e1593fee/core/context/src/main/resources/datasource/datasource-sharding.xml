@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:rdb="http://www.dangdang.com/schema/ddframe/rdb"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.dangdang.com/schema/ddframe/rdb
+       http://www.dangdang.com/schema/ddframe/rdb/rdb.xsd">
+    
+    <bean name="originalShardingLogDataSource" class="org.apache.tomcat.jdbc.pool.DataSource">
+  		<property name="url" value="${yoo-cloud.datasource.sharding.log.url}"/>
+  		<property name="driverClassName" value="${yoo-cloud.datasource.sharding.log.driverClassName}"/>
+  		<property name="username" value="${yoo-cloud.datasource.sharding.log.username}"/>
+  		<property name="password" value="${yoo-cloud.datasource.sharding.log.password}"/>
+  		<property name="initialSize" value="${yoo-cloud.datasource.sharding.log.initialSize}"/>
+  		<property name="minIdle" value="${yoo-cloud.datasource.sharding.log.minIdle}"/>
+  		<property name="maxActive" value="${yoo-cloud.datasource.sharding.log.maxActive}"/>
+  		<property name="maxWait" value="${yoo-cloud.datasource.sharding.log.maxWait}"/>
+  		<property name="timeBetweenEvictionRunsMillis" value="${yoo-cloud.datasource.sharding.log.timeBetweenEvictionRunsMillis}"/>
+  		<property name="minEvictableIdleTimeMillis" value="${yoo-cloud.datasource.sharding.log.minEvictableIdleTimeMillis}"/>
+  		<property name="validationInterval" value="${yoo-cloud.datasource.sharding.log.validationInterval}"/>
+  		<property name="validationQuery" value="${yoo-cloud.datasource.sharding.log.validationQuery}"/>
+  		<property name="removeAbandoned" value="${yoo-cloud.datasource.sharding.log.removeAbandoned}"/>
+  		<property name="removeAbandonedTimeout" value="${yoo-cloud.datasource.sharding.log.removeAbandonedTimeout}"/>
+  		<property name="logAbandoned" value="${yoo-cloud.datasource.sharding.log.logAbandoned}"/>
+  		<property name="testWhileIdle" value="${yoo-cloud.datasource.sharding.log.testWhileIdle}"/>
+  		<property name="testOnBorrow" value="${yoo-cloud.datasource.sharding.log.testOnBorrow}"/>
+  		<property name="testOnReturn" value="${yoo-cloud.datasource.sharding.log.testOnReturn}"/>
+  		<property name="jdbcInterceptors" value="${yoo-cloud.datasource.sharding.log.jdbcInterceptors}"/>
+  		<property name="defaultAutoCommit" value="${yoo-cloud.datasource.sharding.log.defaultAutoCommit}"/>
+  		<property name="jmxEnabled" value="${yoo-cloud.datasource.sharding.log.jmxEnabled}"/>
+  		<qualifier value="originalShardingLogDataSource"/>
+	</bean>  
+	
+	<rdb:master-slave-data-source 
+		id="masterSlaveShardingLogDataSource" 
+		master-data-source-ref="originalShardingLogDataSource" 
+		slave-data-sources-ref="originalShardingLogDataSource" />  
+		                    
+    <rdb:strategy 
+    	id="tableShardingByDateStrategy" 
+    	sharding-columns="create_at"
+        algorithm-class="com.lanking.cloud.component.db.sharding.algorithm.SingleKeyByDateTableShardingAlgorithm" />
+
+    <rdb:data-source id="shardingLogDataSource">
+        <rdb:sharding-rule data-sources="masterSlaveShardingLogDataSource">
+            <rdb:table-rules>
+                <rdb:table-rule logic-table="api_monitor_log" table-strategy="tableShardingByDateStrategy" dynamic="true"/>
+            </rdb:table-rules>
+        </rdb:sharding-rule>
+    </rdb:data-source>
+    
+    <bean name="shardingLogDataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    	<property name="dataSource" ref="shardingLogDataSource"/>
+    	<qualifier value="shardingLogDataSourceTransactionManager"/>
+	</bean>  
+	
+	<bean name="shardingLogJdbcTemplate" class="com.lanking.cloud.component.db.support.jdbcTemplate.JdbcTemplate">
+    	<property name="dataSource" ref="shardingLogDataSource"/>
+    	<qualifier value="shardingLogJdbcTemplate"/>
+	</bean>  
+</beans>

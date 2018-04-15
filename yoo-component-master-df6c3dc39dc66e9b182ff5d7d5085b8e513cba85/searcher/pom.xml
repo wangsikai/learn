@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+	
+    <parent>
+        <groupId>com.lanking.cloud.component</groupId>
+        <artifactId>yoo-component-parent</artifactId>
+        <version>1.0.3-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>searcher</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>jar</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+    
+    <dependencies>
+	    <!-- 第三方依赖 -->
+	    <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-web</artifactId>
+		    <scope>provided</scope>
+		</dependency> 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<scope>provided</scope>
+		</dependency> 	    	 
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+ 			<groupId>org.elasticsearch</groupId>
+  			<artifactId>elasticsearch</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.elasticsearch.client</groupId>
+		    <artifactId>transport</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.elasticsearch.client</groupId>
+		    <artifactId>elasticsearch-rest-client-sniffer</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.elasticsearch.client</groupId>
+		    <artifactId>elasticsearch-rest-client</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.elasticsearch.client</groupId>
+		    <artifactId>elasticsearch-rest-high-level-client</artifactId>
+		</dependency>
+		
+
+		<dependency>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-core</artifactId>
+		</dependency>
+		
+		
+		
+		<!-- 依赖的其他模块 -->
+		<dependency>
+        	<groupId>com.lanking.cloud.common</groupId>
+        	<artifactId>ex</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>com.lanking.cloud.common</groupId>
+        	<artifactId>sdk</artifactId>
+        </dependency>
+        <dependency>
+		    <groupId>com.alibaba</groupId>
+    		<artifactId>fastjson</artifactId>
+    	</dependency>
+    </dependencies>
+    
+    <build>
+    	<plugins>
+    		<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+				    	<id>attach-sources</id>
+				      	<goals>
+				        	<goal>jar</goal>
+				      	</goals>
+				    </execution>
+				</executions>
+			</plugin>
+    	</plugins>
+    </build>
+</project>
